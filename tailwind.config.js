@@ -13,10 +13,20 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: ['Titillium Web', ...defaultTheme.fontFamily.sans],
             },
         },
     },
+    daisyui: {
+        themes: {
+            prueban : {
+                'primary': '#730B94',
+            }
+        }
+    },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        require('daisyui'),
+    ],
 };
