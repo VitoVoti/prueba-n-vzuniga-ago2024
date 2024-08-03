@@ -4,8 +4,8 @@
  * Analytics
  */
 return [
-    'email' => env('ANALYTICS_GLOBAL_KEY', ''),
-    'password' => env('ANALYTICS_GLOBAL_KEY_VITRINA', ''),
-    'name' => env('ANALYTICS_CONVERSION_VOUCHER_VITRINA', ''),
-    'position' => env('ANALYTICS_CONVERSION_VOUCHER_VITRINA', ''),
+    'email' => env('DEFAULT_ADMIN_EMAIL', 'admin@admin.com'),
+    'password' => env('DEFAULT_ADMIN_PASSWORD', env('APP_KEY', 'secret')),
+    'name' => env('DEFAULT_ADMIN_NAME', ''),
+    'position' => env('DEFAULT_ADMIN_POSITION', ''),
 ];

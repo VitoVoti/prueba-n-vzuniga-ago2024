@@ -3,6 +3,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import Login from '../Components/Auth/Login.vue';
 import Register from '../Components/Auth/Register.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
+import Boton from '@/Components/Layout/Boton.vue';
 
 defineProps({
     canLogin: {
@@ -27,6 +28,7 @@ function handleImageError() {
     document.getElementById('docs-card-content')?.classList.add('!flex-row');
     document.getElementById('background')?.classList.add('!hidden');
 }
+
 </script>
 
 <template>
@@ -46,7 +48,7 @@ function handleImageError() {
                         <h1>Bienvenidos a Neering!</h1>
                         <p>Desarrolla esta plataforma a la perfección</p>
                     </div>
-                    <div>
+                    <div v-if="$page.props.auth.user == null">
                         <div role="tablist" class="tabs tabs-bordered">
                             <input 
                                 type="radio" 
@@ -70,6 +72,21 @@ function handleImageError() {
                                 <Register />
                             </div>
                         </div>
+                    </div>
+                    <div v-else>
+                        <h4>Bienvenido de vuelta, {{ $page.props.auth.user.name }}</h4>
+                        <Link :href="route('dashboard')">
+                            <Boton>
+                                Ir al Dashboard
+                            </Boton>
+                        </Link>
+                        <Link
+                            :href="route('logout')"
+                            method="post"
+                            as="button"
+                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >Log Out</Link
+                        >
                     </div>
             </div>
                     
