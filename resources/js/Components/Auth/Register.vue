@@ -11,6 +11,8 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    github_username: '',
+    position: '',
 });
 
 const submit = () => {
@@ -24,7 +26,7 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" value="Nombre" />
 
                 <TextInput
                     id="name"
@@ -52,6 +54,38 @@ const submit = () => {
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div>
+                <InputLabel for="github_username" value="Nombre de usuario de GitHub" />
+
+                <TextInput
+                    id="github_username"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.github_username"
+                    required
+                    autofocus
+                    autocomplete="github_username"
+                />
+
+                <InputError class="mt-2" :message="form.errors.github_username" />
+            </div>
+
+            <div>
+                <InputLabel for="position" value="Cargo" />
+
+                <TextInput
+                    id="position"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.position"
+                    required
+                    autofocus
+                    autocomplete="position"
+                />
+
+                <InputError class="mt-2" :message="form.errors.position" />
             </div>
 
             <div class="mt-4">
