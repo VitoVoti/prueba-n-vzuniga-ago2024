@@ -70,4 +70,29 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+
+    // Custom: roles a través de user_roles
+    // Ya que no tendremos interfaz para asignar roles (todo desde seeders/consola) no necesitamos un modelo UserRole
+    public function roles(){
+        return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
+    }
+
+    public function isAdmin(){
+        return $this->roles()->where('name', 'admin')->exists();
+    }
+    public function isRegularUser(){
+        return !$this->isAdmin();
+    }
+
+    public function repos(){
+        return $this->hasMany(Repo::class);
+    }
+
+    public function articles(){
+        return $this->hasMany(Article::class);
+    }
+
+
+
 }
