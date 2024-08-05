@@ -38,10 +38,14 @@ class ArticleController extends Controller
     public function store(ArticleCreationRequest $request)
     {
 
-        $request->user()->articles()->create([
+        $new_article = $request->user()->articles()->create([
             'title' => $request->title,
             'body' => $request->body,
         ]);
+
+        if($request->tags){
+            $new_article->tags()->attach($request->tags);
+        }
 
         return redirect()->route('articles.index');
     }

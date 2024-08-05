@@ -12,8 +12,8 @@ const toast = useToast();
 const props = defineProps({
     elemento_a_editar: {
         type: Object,
-        default: null,
-        required: true,
+        default: {},
+        required: false,
     },
     tipo_de_elemento: {
         type: String,
@@ -24,6 +24,11 @@ const props = defineProps({
         type: Array,
         default: [],
         required: true,
+    },
+    modo: {
+        type: String,
+        default: "CREAR",
+        required: false,
     }
 });
 
@@ -69,16 +74,34 @@ const formulario = useForm({
 });
 
 const submit = () => {
-    formulario.patch(route(tipo_de_elemento_para_ruta() + '.update', props.elemento_a_editar.id), {
-        onSuccess: () => {
-            formulario.reset()
-            emit('cerrar-modal-editar')
-            toast.add({ severity: 'success', summary: 'Actualizado', detail: 'Se actualizó el registro correctamente', life: 3000 });
-        },
-        onError: () => {
-            toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el registro. Verifique que todos los datos estén correctos.', life: 3000 });
-        },
-    });
+    if(props.modo == 'EDITAR') {
+        
+    
+        formulario.patch(route(tipo_de_elemento_para_ruta() + '.update', props.elemento_a_editar.id), {
+            onSuccess: () => {
+                formulario.reset()
+                emit('cerrar-modal-editar')
+                toast.add({ severity: 'success', summary: 'Actualizado', detail: 'Se actualizó el registro correctamente', life: 3000 });
+            },
+            onError: () => {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo actualizar el registro. Verifique que todos los datos estén correctos.', life: 3000 });
+            }
+        });
+    }
+
+    if(props.modo == 'CREAR') {
+
+        formulario.post(route(tipo_de_elemento_para_ruta() + '.store'), {
+            onSuccess: () => {
+                formulario.reset()
+                emit('cerrar-modal-editar')
+                toast.add({ severity: 'success', summary: 'Creado', detail: 'Se creó el registro correctamente', life: 3000 });
+            },
+            onError: () => {
+                toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo crear el registro. Verifique que todos los datos estén correctos.', life: 3000 });
+            }
+        });
+    }
 };
 
 
@@ -88,8 +111,11 @@ const submit = () => {
 <template>
     <Dialog v-model:visible="mostrar_modal_actual" modal :closable="false">
         <template #header>
-            <h3 class="text-lg font-medium text-gray-900">
+            <h3 v-if="modo == 'EDITAR'" class="text-lg font-medium text-gray-900">
                 Editar {{ props.elemento_a_editar.name }}
+            </h3>
+            <h3 v-if="modo == 'CREAR'" class="text-lg font-medium text-gray-900">
+                Crear {{ props.tipo_de_elemento }}
             </h3>
         </template>
         <form @submit.prevent="submit">

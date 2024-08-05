@@ -17,7 +17,7 @@ defineProps({
             :columns="[
                 {id: 1, field: 'name', label: 'Título'},
             ]"
-            :acciones="['editar']"
+            :acciones="['editar', 'crear']"
         >
         </CrudLayout>
     </AuthenticatedLayout>

@@ -22,7 +22,7 @@ defineProps({
                 {id: 2, field: 'body', label: 'Contenido'},
                 {id: 3, field: 'tags', label: 'Tags'},
             ]"
-            :acciones="['editar', 'eliminar']"
+            :acciones="['editar', 'eliminar', 'crear']"
             :tags = "tags"
         >
         </CrudLayout>

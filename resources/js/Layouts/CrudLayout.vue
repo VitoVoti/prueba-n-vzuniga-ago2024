@@ -1,5 +1,5 @@
 <script setup>
-import ModalEditar from '@/Components/Layout/ModalEditar.vue';
+import ModalCrearEditar from '@/Components/Layout/ModalCrearEditar.vue';
 import ModalEliminar from '@/Components/Layout/ModalEliminar.vue';
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue';
@@ -13,6 +13,7 @@ const props = defineProps({
     tags: Array,
     acciones: Array
 })
+const key_de_filtros = ref(123);
 
 const resources_actual = ref(props.resources);
 console.log("resources_actual.value es", props.resources);
@@ -22,8 +23,22 @@ const elemento_a_editar = ref(null);
 const elemento_a_eliminar = ref(null);
 const comenzar_a_mostrar_modal_editar = ref(false);
 const comenzar_a_mostrar_modal_eliminar = ref(false);
+const comenzar_a_mostrar_modal_crear = ref(false);
 
 // Metodos
+
+function cerrarModalesYReiniciarFiltros() {
+    comenzar_a_mostrar_modal_crear.value = false;
+    comenzar_a_mostrar_modal_editar.value = false;
+    comenzar_a_mostrar_modal_eliminar.value = false;
+    resources_actual.value = props.resources;
+    key_de_filtros.value = key_de_filtros.value + 1;
+}
+
+const mostrarModalCrear = (elemento) => {
+    comenzar_a_mostrar_modal_crear.value = true;
+}
+
 const mostrarModalEditar = (elemento) => {
     comenzar_a_mostrar_modal_editar.value = false;
     elemento_a_editar.value = elemento;
@@ -86,12 +101,12 @@ function filtrar(filtros){
 
         <div class="mb-4 flex justify-between">
             <h1 class="text-3xl font-bold">Listado de {{ title }}</h1>
-            <div class="flex">
+            <div class="flex p-2 flex-row gap-x-2">
                 <Panel header="Filtros" toggleable collapsed>
-                    <FiltrosDeCrudLayout :tags="tags" v-on:cambio-en-filtros="filtrar" />
+                    <FiltrosDeCrudLayout :tags="tags" v-on:cambio-en-filtros="filtrar" :key="key_de_filtros" />
                 </Panel>
                 
-                <Button link class="ms-2">Agregar</Button>
+                <Button link class="ms-2" @click="mostrarModalCrear()" v-if="acciones.includes('crear')">Agregar</Button>
             </div>
         </div>
 
@@ -126,11 +141,21 @@ function filtrar(filtros){
         </DataTable>
     </div>
 
+    <div v-if="comenzar_a_mostrar_modal_crear" >
+        <ModalCrearEditar 
+            modo="CREAR"
+            :tipo_de_elemento="title" 
+            v-on:cerrar-modal-editar="() => { cerrarModalesYReiniciarFiltros(); }"
+            :tags_existentes="tags"
+        />
+    </div>
+
     <div v-if="comenzar_a_mostrar_modal_editar" >
-        <ModalEditar 
+        <ModalCrearEditar 
+            modo="EDITAR"
             :elemento_a_editar="elemento_a_editar" 
             :tipo_de_elemento="title" 
-            v-on:cerrar-modal-editar="comenzar_a_mostrar_modal_editar = false"
+            v-on:cerrar-modal-editar="() => { cerrarModalesYReiniciarFiltros(); }"
             :tags_existentes="tags"
         />
     </div>
