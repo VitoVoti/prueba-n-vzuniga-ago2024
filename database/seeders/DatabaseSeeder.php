@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Execute Roles seeder
+        // Por defecto solo se ejecutan estos 2 seeders, los otros son para testing y se deben ejecutar manualmente
         $this->call(RolesSeeder::class);
         $this->call(DefaultAdminSeeder::class);
 

@@ -27,6 +27,12 @@ class User extends Authenticatable implements MustVerifyEmail
             if ($user->isDirty('github_username')) {
                 UpdateGithubInfoFromUser::dispatch($user);
             }
+            // Al crear, siempre se le asigna el rol user, incluso si es admin
+            if($user->roles()->count() == 0){
+                $rol_user = Role::where('name', 'user')->first();
+                $user->roles()->attach($rol_user);
+                $user->save();
+            }
         });
         self::updated(function ($user) {
             if ($user->isDirty('github_username')) {
@@ -78,11 +84,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'role_id');
     }
 
-    public function isAdmin(){
-        return $this->roles()->where('name', 'admin')->exists();
+    
+    public function hasRole($role){
+        return $this->roles()->where('name', $role)->exists();
     }
-    public function isRegularUser(){
-        return !$this->isAdmin();
+    public function isAdmin(){
+        return $this->hasRole('admin');
     }
 
     public function repos(){

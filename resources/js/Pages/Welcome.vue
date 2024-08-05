@@ -4,6 +4,10 @@ import Login from '../Components/Auth/Login.vue';
 import Register from '../Components/Auth/Register.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import Boton from '@/Components/Layout/Boton.vue';
+import TabList from 'primevue/tablist';
+import Tabs from 'primevue/tabs';
+import TabPanels from 'primevue/tabpanels';
+import TabPanel from 'primevue/tabpanel';
 
 defineProps({
     canLogin: {
@@ -45,48 +49,41 @@ function handleImageError() {
                         
                     </div>
                     <div>
-                        <h1>Bienvenidos a Neering!</h1>
+                        <h1 class="text-h1">¡Bienvenidos a Neering!</h1>
                         <p>Desarrolla esta plataforma a la perfección</p>
                     </div>
                     <div v-if="$page.props.auth.user == null">
-                        <div role="tablist" class="tabs tabs-bordered">
-                            <input 
-                                type="radio" 
-                                name="welcome_page_tabs" 
-                                role="tab" 
-                                class="tab mr-2" 
-                                aria-label="Iniciar Sesión" 
-                            />
-                            <div role="tabpanel" class="tab-content p-10">
-                                <Login canResetPassword="true"/>
-                            </div>
-
-                            <input
-                                type="radio"
-                                name="welcome_page_tabs"
-                                role="tab"
-                                class="tab"
-                                aria-label="Registrarse"
-                                checked="checked" />
-                            <div role="tabpanel" class="tab-content p-10">
-                                <Register />
-                            </div>
-                        </div>
+                        <Tabs value="0">
+                            <TabList>
+                                <Tab value="0">Iniciar Sesión</Tab>
+                                <Tab value="1">Registrarse</Tab>
+                            </TabList>
+                            <TabPanels>
+                                <TabPanel value="0">
+                                    <Login :canResetPassword="true"/>
+                                </TabPanel>
+                                
+                                <TabPanel value="1">
+                                    <Register />
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
                     </div>
-                    <div v-else>
+                    <div v-else class="mt-4 flex flex-col gap-y-4">
                         <h4>Bienvenido de vuelta, {{ $page.props.auth.user.name }}</h4>
                         <Link :href="route('dashboard')">
-                            <Boton>
+                            <Button severity="primary" class="w-full">
                                 Ir al Dashboard
-                            </Boton>
+                            </Button>
                         </Link>
                         <Link
                             :href="route('logout')"
                             method="post"
-                            as="button"
-                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >Log Out</Link
-                        >
+                            >
+                            <Button severity="secondary" class="w-full">
+                                Log Out
+                            </Button>
+                        </Link>
                     </div>
             </div>
                     

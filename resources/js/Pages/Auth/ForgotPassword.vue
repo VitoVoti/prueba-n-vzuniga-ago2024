@@ -3,7 +3,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 
 defineProps({
@@ -38,7 +38,7 @@ const submit = () => {
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
+                <InputDeTexto
                     id="email"
                     type="email"
                     class="mt-1 block w-full"

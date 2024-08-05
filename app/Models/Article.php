@@ -9,10 +9,10 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = [ 'title' , 'body' ];
 
     public function tags(){
-        return $this->belongsToMany(Tag::class);
+        return $this->morphToMany(Tag::class, 'taggable');
     }
 
     public function user(){

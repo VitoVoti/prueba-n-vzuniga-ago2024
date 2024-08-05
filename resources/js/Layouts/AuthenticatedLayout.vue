@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
+import LogoEmpresa from '@/Components/Layout/LogoEmpresa.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
@@ -8,6 +8,28 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
 
 const showingNavigationDropdown = ref(false);
+
+const nav_items = [
+    {
+        Id: 1,
+        label: 'Articles',
+        icon: 'pi pi-file',
+        href: 'articles.index',
+    },
+    {
+        id: 2,
+        label: 'Repos',
+        icon: 'pi pi-github',
+        href: 'repos.index',
+    },
+    {
+        id: 3,
+        label: 'Tags',
+        icon: 'pi pi-tags',
+        href: 'tags.index',
+    },
+];
+
 </script>
 
 <template>
@@ -21,18 +43,13 @@ const showingNavigationDropdown = ref(false);
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo
+                                    <LogoEmpresa
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
-                                </NavLink>
-                            </div>
+                            
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -45,6 +62,13 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
+                                                <span v-if="$page.props.auth.user['profile_photo_path']">
+                                                    <img
+                                                        :src="'/storage/' + $page.props.auth.user['profile_photo_path']"
+                                                        alt="profile photo"
+                                                        class="h-8 w-8 rounded-full object-cover"
+                                                    />
+                                                </span>
                                                 {{ $page.props.auth.user.name }}
 
                                                 <svg
@@ -111,10 +135,20 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
                 >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
+                    <!-- Navigation Links (Mobile) -->
+                    <div class="pt-2 pb-3 space-y-1 flex flex-col">
+                        <span v-for="item in nav_items" :key="item.id" class="">
+                            <Link
+                                :href="route(item.href)"
+                                :active="route().current(item.href)"
+                                severity="link"
+                                
+                            >
+                                <Button link class="w-full">
+                                    {{ item.label }}
+                                </Button>
+                            </Link>
+                        </span>
                     </div>
 
                     <!-- Responsive Settings Options -->
@@ -144,9 +178,24 @@ const showingNavigationDropdown = ref(false);
             </header>
 
             <!-- Page Content -->
-            <main>
-                <slot />
-            </main>
+            <div class="grid grid-cols-12 gap-2">
+                <!-- Navigation Links (Desktop) -->
+                <Menu :model="nav_items" class="col-span-2 hidden sm:block">
+                    <template #item="{ item, props }">
+                        <Link 
+                            class="flex items-center"
+                            :href="route(item.href)"
+                        >
+                            <span :class="item.icon" />
+                            <span>{{ item.label }}</span>
+                        </Link>
+                    
+                    </template>
+                </Menu> 
+                <main class="col-span-full sm:col-span-10">
+                    <slot />
+                </main>
+            </div>
         </div>
     </div>
 </template>

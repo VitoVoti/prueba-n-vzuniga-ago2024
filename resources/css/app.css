@@ -1,5 +1,6 @@
 
 @import url('tittilium_font.css');
+@import url('primeicons/primeicons.css');
 
 @tailwind base;
 @tailwind components;

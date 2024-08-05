@@ -4,7 +4,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import Boton from '@/Components/Layout/Boton.vue';
 
@@ -40,7 +40,7 @@ const submit = () => {
             <div>
                 <InputLabel for="email" value="Email" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="email"
                     type="email"
                     class="mt-1 block w-full"
@@ -57,7 +57,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="password" value="Password" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="password"
                     type="password"
                     class="mt-1 block w-full"
@@ -70,14 +70,11 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
-            <div class="block mt-4">
+            <div class="flex flex-row justify-between mt-4">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
                     <span class="ms-2 text-sm text-gray-600">Recuerdame</span>
                 </label>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
@@ -85,10 +82,14 @@ const submit = () => {
                 >
                     ¿Olvidó su contraseña?
                 </Link>
+            </div>
 
-                <Boton :class="{ 'opacity-25': form.processing, 'w-full': true, 'btn-primary': true }" :disabled="form.processing">
+            <div class="flex items-center justify-end mt-4">
+                
+
+                <Button severity="primary" type="submit" :class="{ 'opacity-25': form.processing, 'w-full': true, 'btn-primary': true }" :disabled="form.processing">
                     Ingresar
-                </Boton>
+                </Button>
             </div>
         </form>
 

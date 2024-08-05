@@ -3,7 +3,7 @@ import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 
 const form = useForm({
@@ -26,9 +26,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Nombre" />
+                <InputLabel for="name" value="Nombre" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="name"
                     type="text"
                     class="mt-1 block w-full"
@@ -36,30 +36,32 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                    placeholder="Nombre"
                 />
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" value="Email" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="email"
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
-                    autocomplete="username"
+                    autocomplete="email"
+                    placeholder="Email"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
             <div>
-                <InputLabel for="github_username" value="Nombre de usuario de GitHub" />
+                <InputLabel for="github_username" value="Nombre de usuario de GitHub" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="github_username"
                     type="text"
                     class="mt-1 block w-full"
@@ -67,15 +69,16 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="github_username"
+                    placeholder="Nombre de usuario de GitHub"
                 />
 
                 <InputError class="mt-2" :message="form.errors.github_username" />
             </div>
 
             <div>
-                <InputLabel for="position" value="Cargo" />
+                <InputLabel for="position" value="Cargo" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="position"
                     type="text"
                     class="mt-1 block w-full"
@@ -83,52 +86,49 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="position"
+                    placeholder="Cargo"
                 />
 
                 <InputError class="mt-2" :message="form.errors.position" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <InputLabel for="password" value="Contraseña" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="password"
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
                     autocomplete="new-password"
+                    placeholder="Contraseña"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
+                <InputLabel for="password_confirmation" value="Confirme su contraseña" class="hidden" />
 
-                <TextInput
+                <InputDeTexto
                     id="password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
                     required
                     autocomplete="new-password"
+                    placeholder="Confirme su contraseña"
                 />
 
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
 
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
+                <Button severity="primary" class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Registrarse
+                </Button>
             </div>
         </form>
 
