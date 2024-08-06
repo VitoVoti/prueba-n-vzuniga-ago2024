@@ -44,7 +44,7 @@ const confirm2 = () => {
         rejectLabel: 'Cancelar',
         rejectProps: {
             label: 'Cancelar',
-            severity: 'secondary',
+            severity: 'primary',
             outlined: true
         },
         acceptProps: {

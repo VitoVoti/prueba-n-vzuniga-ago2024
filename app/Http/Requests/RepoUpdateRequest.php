@@ -22,7 +22,7 @@ class RepoUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tags' => ['required', 'array'],
+            'tags' => ['present', 'array'],
         ];
     }
 }

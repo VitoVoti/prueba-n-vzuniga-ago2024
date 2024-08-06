@@ -1,6 +1,6 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
@@ -37,9 +37,10 @@ const submit = () => {
                     autofocus
                     autocomplete="name"
                     placeholder="Nombre"
+                    :class="{ 'border-1 border-red-400': form.errors['name']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.name" />
             </div>
 
             <div class="mt-4">
@@ -53,12 +54,13 @@ const submit = () => {
                     required
                     autocomplete="email"
                     placeholder="Email"
+                    :class="{ 'border-1 border-red-400': form.errors['email']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.email" />
             </div>
 
-            <div>
+            <div class="mt-4">
                 <InputLabel for="github_username" value="Nombre de usuario de GitHub" class="hidden" />
 
                 <InputDeTexto
@@ -70,12 +72,13 @@ const submit = () => {
                     autofocus
                     autocomplete="github_username"
                     placeholder="Nombre de usuario de GitHub"
+                    :class="{ 'border-1 border-red-400': form.errors['github_username']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.github_username" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.github_username" />
             </div>
 
-            <div>
+            <div class="mt-4">
                 <InputLabel for="position" value="Cargo" class="hidden" />
 
                 <InputDeTexto
@@ -87,9 +90,10 @@ const submit = () => {
                     autofocus
                     autocomplete="position"
                     placeholder="Cargo"
+                    :class="{ 'border-1 border-red-400': form.errors['position']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.position" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.position" />
             </div>
 
             <div class="mt-4">
@@ -103,9 +107,10 @@ const submit = () => {
                     required
                     autocomplete="new-password"
                     placeholder="Contraseña"
+                    :class="{ 'border-1 border-red-400': form.errors['password']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="mt-4">
@@ -119,14 +124,15 @@ const submit = () => {
                     required
                     autocomplete="new-password"
                     placeholder="Confirme su contraseña"
+                    :class="{ 'border-1 border-red-400': form.errors['password']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
             <div class="flex items-center justify-end mt-4">
 
-                <Button severity="primary" class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <Button severity="primary" type="submit" class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Registrarse
                 </Button>
             </div>

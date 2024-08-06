@@ -1,7 +1,7 @@
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
@@ -49,9 +49,10 @@ const submit = () => {
                     autofocus
                     autocomplete="username"
                     placeholder="Email"
+                    :class="{ 'border-1 border-red-400': form.errors['email']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.email" />
             </div>
 
             <div class="mt-4">
@@ -65,9 +66,10 @@ const submit = () => {
                     required
                     autocomplete="current-password"
                     placeholder="Contraseña"
+                    :class="{ 'border-1 border-red-400': form.errors['password']  }"
                 />
 
-                <InputError class="mt-2" :message="form.errors.password" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="flex flex-row justify-between mt-4">

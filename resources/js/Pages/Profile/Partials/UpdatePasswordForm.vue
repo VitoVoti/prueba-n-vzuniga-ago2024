@@ -1,5 +1,5 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
@@ -57,7 +57,7 @@ const updatePassword = () => {
                     placeholder="Contraseña actual"
                 />
 
-                <InputError :message="form.errors.current_password" class="mt-2" />
+                <ErrorDeFormulario :message="form.errors.current_password" class="mt-2" />
             </div>
 
             <div>
@@ -73,7 +73,7 @@ const updatePassword = () => {
                     placeholder="Nueva Contraseña"
                 />
 
-                <InputError :message="form.errors.password" class="mt-2" />
+                <ErrorDeFormulario :message="form.errors.password" class="mt-2" />
             </div>
 
             <div>
@@ -88,7 +88,7 @@ const updatePassword = () => {
                     placeholder="Confirmar Nueva Contraseña"
                 />
 
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                <ErrorDeFormulario :message="form.errors.password_confirmation" class="mt-2" />
             </div>
 
             <div class="flex items-center gap-4">

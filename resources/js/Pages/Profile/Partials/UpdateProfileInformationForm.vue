@@ -1,5 +1,5 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
@@ -43,7 +43,7 @@ const form = useForm({
                     placeholder="Nombre"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.name" />
             </div>
 
             <div>
@@ -59,7 +59,7 @@ const form = useForm({
                     placeholder="Email"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.email" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">

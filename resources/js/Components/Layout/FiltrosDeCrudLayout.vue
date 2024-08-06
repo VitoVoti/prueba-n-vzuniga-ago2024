@@ -17,8 +17,8 @@ const filtros_actuales = ref({
 </script>
 
 <template>
-    <div class="grid grid-cols-3 gap-4">
-        <div class="col-span-3 sm:col-span-2">
+    <div class="grid grid-cols-12 gap-4">
+        <div class="col-span-full md:col-span-6">
             <label for="nombre" class="sr-only">Buscar por nombre</label>
             <InputDeTexto
                 id="nombre"
@@ -30,28 +30,25 @@ const filtros_actuales = ref({
             />
         </div>
 
-        <div class="col-span-3 sm:col-span-1">
-            <label for="tags" class="sr-only">Tags</label>
-            <Select
-                id="tags"
-                v-model="filtros_actuales.tags"
-                multiple
-                class="mt-1 block w-full"
-                placeholder="Tags"
-                
-            >
-                <option
-                    v-for="tag in props.tags"
-                    :key="tag.id"
-                    :value="tag.id"
+        <div class="col-span-full flex flex-col gap-y-1">
+            <label for="tags">Tags</label>
+            <div class="flex flex-wrap gap-4 justify-start">
+                <div
+                    v-for="tag of props.tags" 
+                    :key="'tag_' + tag.id" 
+                    class="flex items-center"
                 >
-                    {{ tag.name }}
-                </option>
-            </Select>
+                            
+                    <label :for="tag.key">
+                        <Checkbox v-model="filtros_actuales['tags']" :inputId="tag.key" name="tags" :value="tag.id" class="mr-2" />
+                        {{ tag.name }}
+                    </label>
+                </div>
+            </div>
         </div>
 
-        <div class="col-span-3 sm:col-span-1">
-            <label for="fecha_inicio" class="sr-only">Fecha de inicio</label>
+        <div class="col-span-full md:col-span-6">
+            <label for="fecha_inicio">Fecha de inicio</label>
             <InputDeTexto
                 id="fecha_inicio"
                 type="date"
@@ -62,8 +59,8 @@ const filtros_actuales = ref({
             />
         </div>
 
-        <div class="col-span-3 sm:col-span-1">
-            <label for="fecha_fin" class="sr-only">Fecha de fin</label>
+        <div class="col-span-full md:col-span-6">
+            <label for="fecha_fin">Fecha de fin</label>
             <InputDeTexto
                 id="fecha_fin"
                 type="date"
@@ -74,7 +71,7 @@ const filtros_actuales = ref({
             />
         </div>
 
-        <div class="col-span-3 sm:col-span-1">
+        <div class="col-span-full md:col-span-6">
             <Button
                 type="button"
                 @click="emit('cambio-en-filtros', filtros_actuales)"

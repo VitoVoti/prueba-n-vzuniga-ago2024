@@ -42,7 +42,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                     method="post"
                 >
                     <Button severity="secondary" class="w-full">
-                        Log Out
+                        Cerrar Sesión
                     </Button>
                 </Link>
             </div>

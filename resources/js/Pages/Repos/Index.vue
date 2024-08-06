@@ -23,6 +23,7 @@ defineProps({
             ]"
             :acciones="['editar']"
             :tags = "tags"
+            :permitir_filtros="false"
         >
         </CrudLayout>
     </AuthenticatedLayout>

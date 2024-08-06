@@ -1,6 +1,6 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import Modal from '@/Components/Modal.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
@@ -73,11 +73,11 @@ const closeModal = () => {
 
                     />
 
-                    <InputError :message="form.errors.password" class="mt-2" />
+                    <ErrorDeFormulario :message="form.errors.password" class="mt-2" />
                 </div>
 
                 <div class="mt-6 flex justify-end">
-                    <Button severity="secondary" @click="closeModal"> Cancelar </Button>
+                    <Button severity="secondary" outlined @click="closeModal"> Cancelar </Button>
 
                     <Button
                         class="ms-3"

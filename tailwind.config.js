@@ -15,18 +15,16 @@ export default {
             fontFamily: {
                 sans: ['Titillium Web', ...defaultTheme.fontFamily.sans],
             },
+
+            colors: {
+                'prueba-n-primary': '#730B94',
+                'prueba-n-menu-icons': '#6451A9',
+                'prueba-n-menu-text' :'#403E45',
+            },
         },
-    },
-    daisyui: {
-        themes: {
-            prueban : {
-                'primary': '#730B94',
-            }
-        }
     },
 
     plugins: [
         forms,
-        //require('daisyui'),
     ],
 };

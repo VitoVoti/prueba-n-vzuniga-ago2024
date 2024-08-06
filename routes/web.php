@@ -32,13 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('articles', ArticleController::class);
     Route::resource('tags', TagController::class, ['only' => ['index', 'show']]);
 
-    //Route::get('repos', [RepoController::class, 'index'])->name('repos.index');
     Route::resource('repos', RepoController::class, ['only' => ['index', 'update']]);
-    
-    Route::post('article_tags', [ArticleTagController::class,'store'])->name('article_tags.store');
-    Route::delete('article_tags', [ArticleTagController::class,'destroy'])->name('article_tags.destroy');
-    Route::post('repo_tags', [RepoTagController::class, 'store'])->name('repo_tags.store');
-    Route::delete('repo_tags', [RepoTagController::class, 'destroy'])->name('repo_tags.destroy');
     
 });
 

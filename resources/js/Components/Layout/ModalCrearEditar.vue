@@ -5,6 +5,7 @@ import { useToast } from "primevue/usetoast";
 import { useForm } from '@inertiajs/vue3';
 import InputDeTexto from './InputDeTexto.vue';
 import InputDeTextArea from './InputDeTextArea.vue';
+import ErrorDeFormulario from './ErrorDeFormulario.vue';
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -109,21 +110,24 @@ const submit = () => {
 
 
 <template>
-    <Dialog v-model:visible="mostrar_modal_actual" modal :closable="false">
+    <Dialog 
+    v-model:visible="mostrar_modal_actual" modal :closable="false" :draggable="false"
+    :style="{ width: '50vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+    >
         <template #header>
             <h3 v-if="modo == 'EDITAR'" class="text-lg font-medium text-gray-900">
                 Editar {{ props.elemento_a_editar.name }}
             </h3>
             <h3 v-if="modo == 'CREAR'" class="text-lg font-medium text-gray-900">
-                Crear {{ props.tipo_de_elemento }}
+                Crear {{ (props.tipo_de_elemento && props.tipo_de_elemento.endsWith('s')) ? props.tipo_de_elemento.slice(0, -1) : props.tipo_de_elemento }}
             </h3>
         </template>
         <form @submit.prevent="submit">
             <div class="grid grid-cols-1 gap-4">
                 
-                <div v-for="c in campos_en_formulario()" :key="c.id">
+                <div v-for="c in campos_en_formulario()" :key="c.id" class="flex flex-col gap-y-3">
                     <label 
-                        v-if="c.field != 'tags'"    
+                        v-if="c.field == 'tags'"    
                         :for="c.field" 
                         class="block text-sm font-medium text-gray-700"
                     >
@@ -135,23 +139,36 @@ const submit = () => {
                         :name="'article.' + c.field"
                         v-model="formulario[c.field]"
                         class="w-full"
+                        :class="{ 'border-1 border-red-400': formulario.errors[c.field]  }"
+                        :placeholder="c.label"
                     />
                     <InputDeTexto
                         v-else-if="c.field != 'tags'"
                         :id="c.field"
                         :name="'article.' + c.field"
-                        :type="c.field == 'body' ? 'text' : 'textarea'"
                         v-model="formulario[c.field]"
+                        class="w-full"
+                        :class="{ 'border-1 border-red-400': formulario.errors[c.field]  }"
+                        :placeholder="c.label"
                     />
                     <div
                         v-else-if="c.field == 'tags'" 
                         v-for="tag of tags_existentes" 
                         :key="'tag_' + tag.id" 
-                        class="flex items-center"
+                        class="flex items-center w-full"
                     >
-                        <Checkbox v-model="formulario['tags']" :inputId="tag.key" name="tags" :value="tag.id" />
-                        <label :for="tag.key">{{ tag.name }}</label>
+                        
+                        <label :for="tag.key">
+                            <Checkbox v-model="formulario['tags']" :inputId="tag.key" name="tags" :value="tag.id" class="mr-2" />
+                            {{ tag.name }}
+                        </label>
                     </div>
+
+                    <ErrorDeFormulario :message="formulario.errors[c.field]" />
+
+                    <span v-if="c.field == 'tags' && (!tags_existentes || !tags_existentes.length)">
+                        No hay tags disponibles
+                    </span>
                 </div>
 
                 
@@ -160,7 +177,7 @@ const submit = () => {
         </form>
         <template #footer>
             <div class="w-full flex flex-row justify-end gap-2">
-                <Button label="Cancelar" @click="emit('cerrar-modal-editar')" />
+                <Button label="Cancelar" outlined @click="emit('cerrar-modal-editar')" />
                 <Button label="Guardar" severity="primary" @click="() => submit()" />
             </div>
         </template>

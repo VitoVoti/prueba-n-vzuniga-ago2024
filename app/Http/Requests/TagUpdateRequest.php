@@ -22,7 +22,6 @@ class TagUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'exists:App\Models\Tag,id'],
             'name' => ['required', 'string', 'max:255'],
         ];
     }

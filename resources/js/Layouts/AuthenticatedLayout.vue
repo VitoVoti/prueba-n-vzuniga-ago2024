@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
 const nav_items = [
     {
         Id: 1,
-        label: 'Articles',
+        label: 'Artículos',
         icon: 'pi pi-file',
         href: 'articles.index',
     },
@@ -34,76 +34,32 @@ const nav_items = [
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
-            <nav class="bg-white border-b border-gray-100">
+        <div class="min-h-screen relative">
+            <nav class="bg-white border-b border-gray-100 relative z-20 bg-[#FFFFFF]">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
+                <div class="mx-auto px-4 sm:px-6 lg:px-8 shadow-md">
+                    <div class="flex md:justify-between h-16">
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')">
+                                <Link :href="route('dashboard')" class="flex flex-row items-center gap-x-4">
                                     <LogoEmpresa
                                         class="block h-9 w-auto fill-current text-gray-800"
                                     />
+                                    <h1 class="text-lg font-bold text-gray-800 hidden md:block">TEST NEERING</h1>
                                 </Link>
                             </div>
 
                             
                         </div>
 
-                        <div class="hidden sm:flex sm:items-center sm:ms-6">
-                            <!-- Settings Dropdown -->
-                            <div class="ms-3 relative">
-                                <Dropdown align="right" width="48">
-                                    <template #trigger>
-                                        <span class="inline-flex rounded-md">
-                                            <button
-                                                type="button"
-                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
-                                            >
-                                                <span v-if="$page.props.auth.user['profile_photo_path']">
-                                                    <img
-                                                        :src="'/storage/' + $page.props.auth.user['profile_photo_path']"
-                                                        alt="profile photo"
-                                                        class="h-8 w-8 rounded-full object-cover"
-                                                    />
-                                                </span>
-                                                {{ $page.props.auth.user.name }}
-
-                                                <svg
-                                                    class="ms-2 -me-0.5 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fill-rule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clip-rule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </span>
-                                    </template>
-
-                                    <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
-                                        </DropdownLink>
-                                    </template>
-                                </Dropdown>
-                            </div>
-                        </div>
-
                         <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
+                        <div class="-me-2 flex items-center sm:hidden ml-4">
                             <button
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
-                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                class="inline-flex items-center justify-center p-2 rounded-md text-gray-300 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                             >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <svg class="h-8 w-8" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
                                         :class="{
                                             hidden: showingNavigationDropdown,
@@ -127,6 +83,42 @@ const nav_items = [
                                 </svg>
                             </button>
                         </div>
+
+                        <h1 class="text-lg font-bold text-gray-800 inline-flex md:hidden self-center ml-6">TEST NEERING</h1>
+
+                        <div class="hidden sm:flex sm:items-center sm:ms-6">
+                            <!-- Settings Dropdown -->
+                            <div class="ms-3 relative">
+                                <Dropdown align="right" width="48">
+                                    <template #trigger>
+                                        <span class="inline-flex rounded-md">
+                                            <button
+                                                type="button"
+                                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                            >
+                                                <span v-if="$page.props.auth.user['profile_photo_path']">
+                                                    <img
+                                                        :src="'/storage/' + $page.props.auth.user['profile_photo_path']"
+                                                        alt="profile photo"
+                                                        class="h-8 w-8 rounded-full object-cover mr-2"
+                                                    />
+                                                </span>
+                                                <span class="font-semibold">{{ $page.props.auth.user.name }}</span>
+                                            </button>
+                                        </span>
+                                    </template>
+
+                                    <template #content>
+                                        <DropdownLink :href="route('profile.edit')"> Mi Cuenta </DropdownLink>
+                                        <DropdownLink :href="route('logout')" method="post" as="button">
+                                            Cerrar Sesión
+                                        </DropdownLink>
+                                    </template>
+                                </Dropdown>
+                            </div>
+                        </div>
+
+                        
                     </div>
                 </div>
 
@@ -161,9 +153,9 @@ const nav_items = [
                         </div>
 
                         <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('profile.edit')"> Mi Cuenta </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
+                                Cerrar Sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
@@ -177,25 +169,54 @@ const nav_items = [
                 </div>
             </header>
 
+            
+            
+            <!-- Navigation Links (Desktop) -->
+            <div class="px-4 py-6 pt-[100px] shadow-md w-[200px] hidden sm:flex absolute top-0 left-0 z-10 h-full grow flex-col justify-between">
+                    <Menu :model="nav_items" unstyled class="h-full">
+                        <template #item="{ item, props }">
+                            <Link 
+                                class="flex items-center p-4 gap-x-6 transition duration-150 ease-in-out group"
+                                :class="{'text-prueba-n-menu-icons': route().current(item.href) }"
+                                :href="route(item.href)"
+                            >   
+                                <div 
+                                    class="rounded-full p-2 h-8 w-8 flex items-center justify-center text-gray-400 group-hover:text-white group-hover:bg-prueba-n-menu-icons"
+                                    :class="{ 'bg-prueba-n-menu-icons': route().current(item.href) }"
+                                >
+                                    <span 
+                                        class=" flex items-center justify-center" 
+                                        :class="{ 'text-white': route().current(item.href) }"
+                                    >
+                                        <span style="font-size: 1.2rem;" :class="item.icon" />
+                                    </span>
+                                </div>
+                                <span :class="{ 'font-bold': route().current(item.href), 'text-prueba-n-menu-text': route().current(item.href) }">{{ item.label }}</span>
+                            </Link>
+                        
+                        </template>
+                    </Menu> 
+                    <div class="flex flex-row p-6 text-xs items-center gap-x-2 absolute bottom-0">
+                        <LogoEmpresa class="w-8 h-8"/>
+                        <p>Desarrollado <span class="line-through">por</span> para Neering SpA. por Víctor Zúñiga M.</p>
+                    </div>
+            </div>
+
             <!-- Page Content -->
-            <div class="grid grid-cols-12 gap-2">
-                <!-- Navigation Links (Desktop) -->
-                <Menu :model="nav_items" class="col-span-2 hidden sm:block">
-                    <template #item="{ item, props }">
-                        <Link 
-                            class="flex items-center"
-                            :href="route(item.href)"
-                        >
-                            <span :class="item.icon" />
-                            <span>{{ item.label }}</span>
-                        </Link>
-                    
-                    </template>
-                </Menu> 
-                <main class="col-span-full sm:col-span-10">
+            <div class="flex flex-row gap-2 relative min-h-[86vh]">
+                <main class="p-5 sm:pl-64 w-full p-8">
                     <slot />
                 </main>
             </div>
         </div>
     </div>
+
+    <Toast position="bottom-right">
+        <template #message="slotProps">
+            <div class="flex flex-col items-start flex-auto">
+                <div class="font-medium text-lg m-4">{{ slotProps.message.detail }}</div>
+            </div>
+        </template>
+    </Toast>
+    <ConfirmDialog></ConfirmDialog>
 </template>

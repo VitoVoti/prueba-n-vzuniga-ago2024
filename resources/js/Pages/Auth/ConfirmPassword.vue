@@ -1,6 +1,6 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
+import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
@@ -37,7 +37,7 @@ const submit = () => {
                     autocomplete="current-password"
                     autofocus
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <ErrorDeFormulario class="mt-2" :message="form.errors.password" />
             </div>
 
             <div class="flex justify-end mt-4">

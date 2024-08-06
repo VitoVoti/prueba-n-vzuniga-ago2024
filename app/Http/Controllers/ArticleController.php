@@ -19,7 +19,12 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::with('tags')->where('user_id', request()->user()->id)->get();
+        if(Gate::denies('viewAny', Article::class)) {
+            $articles = Article::with('tags')->where('user_id', request()->user()->id)->get();
+        } else {
+            $articles = Article::with('tags')->with('user')->get();
+        }
+        
         $tags = Tag::all();
         return Inertia::render('Articles/Index', ['articles' => $articles, 'tags' => $tags]);
     }
@@ -43,9 +48,8 @@ class ArticleController extends Controller
             'body' => $request->body,
         ]);
 
-        if($request->tags){
-            $new_article->tags()->attach($request->tags);
-        }
+        
+        $new_article->tags()->attach($request->tags);
 
         return redirect()->route('articles.index');
     }
@@ -55,7 +59,11 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return Inertia::render('Articles/Show', ['article' => $article]);
+        return Inertia::render('Articles/Show', [
+            'article' => $article, 
+            'tag_names' => $article->tags->pluck('name'), 
+            'author_name' => $article->user->name
+        ]);
     }
 
     /**
@@ -83,10 +91,8 @@ class ArticleController extends Controller
 
         $article->title = $request->title;
         $article->body = $request->body;
-
-        if($request->tags){
-            $article->tags()->sync($request->tags);
-        }
+        
+        $article->tags()->sync($request->tags);
 
         $save = $article->save();
         Log::debug("Article ahora es " . json_encode($article) . " y save es: " . $save);
