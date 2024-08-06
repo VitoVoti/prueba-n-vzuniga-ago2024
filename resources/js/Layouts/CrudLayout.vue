@@ -226,17 +226,24 @@ const confirm_de_eliminacion = () => {
             >
                 <span>No hay elementos para mostrar</span>
             </div>
+            <div class="w-100vw">
             <DataTable
                 v-if="resources_actual && resources_actual.length > 0"
                 :value="resources_actual"
                 :paginator="true"
                 :rows="10"
+                scrollable
+                scrollHeight="flex"
+                :sortField="(title == 'Artículos') ? 'updated_at' : null"
+                :sortOrder="-1"
             >
                 <Column 
                     v-for="c in props.columns"
                     :key="c.field"
                     :field="c.field"
                     :header="c.label"
+                    :sortable="c.sortable"
+                    :style="{ width: (c.field == 'body') ? '25%' : 'auto' }"
                 >
                     <template #body="slotProps">
                         <span v-if="c.field == 'tags'">
@@ -264,6 +271,12 @@ const confirm_de_eliminacion = () => {
                                 {{ slotProps.data.user.name }}
                             </div>
                         </span>
+                        <span v-else-if="c.field == 'created_at' || c.field == 'updated_at'">
+                            {{ new Date(slotProps.data[c.field]).toLocaleString('es-ES') }}
+                        </span>
+                        <span v-else-if="c.field == 'body' && props.title == 'Artículos'">
+                            <span class="line-clamp-3" v-html="slotProps.data.body"></span>
+                        </span>
                         <span v-else>
                             {{ slotProps.data[c.field] }}
                         </span>
@@ -280,6 +293,7 @@ const confirm_de_eliminacion = () => {
                     </template>
                 </Column>
             </DataTable>
+            </div>
         </div>
     </div>
 

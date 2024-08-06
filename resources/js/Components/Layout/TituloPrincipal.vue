@@ -25,7 +25,7 @@ const props = defineProps({
                             class="w-full h-auto"
                         />
                     </div>
-                    <h1 class="text-2xl">{{  titulo_principal }}</h1>
+                    <h1 class="text-2xl font-bold">{{  titulo_principal }}</h1>
                     <p>{{ subtitulo_principal }}</p>
                     
     </div>

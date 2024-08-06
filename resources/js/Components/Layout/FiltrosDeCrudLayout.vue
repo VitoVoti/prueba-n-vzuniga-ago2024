@@ -26,7 +26,7 @@ const filtros_actuales = ref({
                 class="mt-1 block w-full"
                 placeholder="Buscar por nombre"
                 v-model="filtros_actuales.nombre"
-                
+                @keyup.enter="emit('cambio-en-filtros', filtros_actuales)"
             />
         </div>
 

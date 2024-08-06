@@ -20,7 +20,7 @@ class ArticlePolicy
      */
     public function view(User $user, Article $article): bool
     {
-        return $article->user_id === $user->id;
+        return $user->isAdmin() || $article->user_id === $user->id;
     }
 
     /**
@@ -36,7 +36,7 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article): bool
     {
-        return $article->user_id === $user->id;
+        return $user->isAdmin() || $article->user_id === $user->id;
     }
 
     /**
@@ -44,7 +44,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article): bool
     {
-        return $article->user_id === $user->id;
+        return $user->isAdmin() || $article->user_id === $user->id;
     }
 
     /**
@@ -52,7 +52,7 @@ class ArticlePolicy
      */
     public function restore(User $user, Article $article): bool
     {
-        return $article->user_id === $user->id;
+        return $user->isAdmin() || $article->user_id === $user->id;
     }
 
     /**

@@ -17,15 +17,19 @@ const page = usePage();
 const roles = computed(() => page.props.auth.roles)
 
 const columnas_a_usar = roles.value.includes("admin") ? [
-    {id: 1, field: 'title', label: 'Título'},
+    {id: 1, field: 'title', label: 'Título', sortable: true},
     {id: 2, field: 'body', label: 'Contenido'},
     {id: 3, field: 'tags', label: 'Tags'},
     {id: 4, field: 'user', label: 'Creador'},
+    {id: 5, field: 'created_at', label: 'Creado', sortable: true},
+    {id: 6, field: 'updated_at', label: 'Actualizado', sortable: true},
 ] :
     [
-        {id: 1, field: 'title', label: 'Título'},
+        {id: 1, field: 'title', label: 'Título', sortable: true},
         {id: 2, field: 'body', label: 'Contenido'},
         {id: 3, field: 'tags', label: 'Tags'},
+        {id: 4, field: 'created_at', label: 'Creado', sortable: true},
+        {id: 5, field: 'updated_at', label: 'Actualizado', sortable: true},
     ];
 </script>
 

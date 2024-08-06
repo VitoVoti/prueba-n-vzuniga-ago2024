@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\ArticleTagController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RepoController;
-use App\Http\Controllers\RepoTagController;
 use App\Http\Controllers\TagController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Foundation\Application;

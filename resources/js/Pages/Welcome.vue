@@ -36,7 +36,7 @@ const current_tab = ref('0');
 <template>
     <Head title="Neering - Bienvenido/a" />
         <GuestLayout>
-            <div class="flex flex-col w-full p-5 gap-y-3 md:p-0 md:max-w-[500px] justify-center">
+            <div class="flex flex-col w-full p-5 gap-y-3 md:p-0 md:max-w-[400px] justify-center">
                     <!-- SVG neering logo -->
                     <TituloPrincipal class="hidden md:flex"/>
                     <div v-if="$page.props.auth.user == null">

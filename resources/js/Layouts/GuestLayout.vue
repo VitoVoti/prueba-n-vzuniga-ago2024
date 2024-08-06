@@ -1,10 +1,5 @@
 <script setup>
-import LogoEmpresa from '@/Components/Layout/LogoEmpresa.vue';
-import { Link } from '@inertiajs/vue3';
 import TituloPrincipal from '@/Components/Layout/TituloPrincipal.vue';
-
-const titulo_principal = "¡Bienvenidos a Neering!";
-const subtitulo_principal = "Desarrolla esta plataforma a la perfección";
 
 </script>
 
