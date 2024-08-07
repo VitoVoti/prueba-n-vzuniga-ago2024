@@ -40,7 +40,14 @@ const filtros_actuales = ref({
                 >
                             
                     <label :for="tag.key">
-                        <Checkbox v-model="filtros_actuales['tags']" :inputId="tag.key" name="tags" :value="tag.id" class="mr-2" />
+                        <Checkbox 
+                            v-model="filtros_actuales['tags']"
+                            :inputId="tag.key"
+                            name="tags"
+                            :value="tag.id"
+                            class="mr-2" 
+                            :binary="true"
+                        />
                         {{ tag.name }}
                     </label>
                 </div>

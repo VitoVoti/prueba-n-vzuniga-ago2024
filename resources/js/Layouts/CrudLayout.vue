@@ -23,23 +23,22 @@ const props = defineProps({
     permitir_filtros: Boolean,
 })
 const key_de_filtros = ref(123);
-
 const resources_actual = ref(props.resources);
-console.log("resources_actual.value es", props.resources);
 
 // Variables
 const elemento_a_editar = ref(null);
 const elemento_a_eliminar = ref(null);
 const comenzar_a_mostrar_modal_editar = ref(false);
-const comenzar_a_mostrar_modal_eliminar = ref(false);
 const comenzar_a_mostrar_modal_crear = ref(false);
 
-// Metodos
+const filtros_popover = ref(false);
+const form = useForm({});
 
+
+// Métodos
 function cerrarModalesYReiniciarFiltros() {
     comenzar_a_mostrar_modal_crear.value = false;
     comenzar_a_mostrar_modal_editar.value = false;
-    comenzar_a_mostrar_modal_eliminar.value = false;
     resources_actual.value = props.resources;
     key_de_filtros.value = key_de_filtros.value + 1;
 }
@@ -56,7 +55,6 @@ const mostrarModalEditar = (elemento) => {
 
 const mostrarModalEliminar = (elemento) => {
     elemento_a_eliminar.value = elemento;
-    console.log("props.title es", props.title, "elemento_a_eliminar es", elemento_a_eliminar.value, tipo_de_elemento_para_ruta() + '.destroy');
     confirm_de_eliminacion();
 }
 
@@ -76,8 +74,11 @@ const title_singular = () => {
     return props.title.substring(0, props.title.length - 1);
 }
 
+const toggle_filtros_popover = (event) => {
+    filtros_popover.value.toggle(event);
+}
+
 function filtrar(filtros){
-    console.log("filtrar, filtros es", filtros);
 
     let elementos_filtrados = JSON.parse(JSON.stringify(props.resources)) // [ ...props.resources ]
 
@@ -91,8 +92,8 @@ function filtrar(filtros){
         }
         let todos_los_nombres = elementos_filtrados.map(r => r[campo_a_filtrar]);
         let ufuzzy = new uFuzzy({});
-        console.log("todos_los_nombres es", todos_los_nombres, "filtros[\"nombre\"] es", filtro_de_nombre);
-        // pre-filter
+
+        // pre-filter, idx dará los índices del array que coinciden con el string buscado
         let [idxs, info, order] = ufuzzy.search(todos_los_nombres, filtro_de_nombre, 0, 1e3)
 
         if(idxs.length == 0){
@@ -101,7 +102,6 @@ function filtrar(filtros){
 
         elementos_filtrados = elementos_filtrados.filter((elemento, index) => idxs.includes(index))
 
-        console.log("idxs es", idxs, "info es", info, "order es", order);
     }
 
     // Filtro por fechas, son strings en formayo YYYY-MM-DD por lo que filtramos alfabeticamente
@@ -130,16 +130,16 @@ function filtrar(filtros){
     if(filtros["tags"] && filtros["tags"].length > 0){
         elementos_filtrados = elementos_filtrados.filter(elemento => {
             let ids_de_tags_de_este_elemento = elemento["tags"].map(e => e.id)
-            console.log("ids_de_tags_de_este_elemento", ids_de_tags_de_este_elemento, "filtros[\"tags\"]", filtros["tags"], filtros["tags"].every(tag => ids_de_tags_de_este_elemento.includes(tag.id)));
             return filtros["tags"].every(tag => ids_de_tags_de_este_elemento.includes(tag))
         })
     }
 
-    console.log("inicialmente es ", props.resources, " elementos_filtrados finalmente es", elementos_filtrados)
-
-    resources_actual.value = elementos_filtrados
+    resources_actual.value = elementos_filtrados;
+    //toggle_filtros_popover(null); // Cerramos popover
 }
 
+// En documento se menciona que ciertos modelos tienen nombre en campo name y otros en title
+// Por eso buscamos cual es el correcto
 const nombre_de_elemento_a_eliminar = () => {
     if(elemento_a_eliminar.value){
         if(elemento_a_eliminar.value["name"]){
@@ -151,7 +151,7 @@ const nombre_de_elemento_a_eliminar = () => {
     return "";
 }
 
-const form = useForm({});
+
 
 const confirm_de_eliminacion = () => {
     confirm.require({
@@ -175,14 +175,13 @@ const confirm_de_eliminacion = () => {
                     onSuccess: () => {
                         elemento_a_eliminar.value = null;
                         toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Elemento eliminado', life: 3000 });
+                        resources_actual.value = props.resources; // Actualizamos listado
                     },
                     onError: () => {
                         toast.add({ severity: 'error', summary: 'Error', detail: 'No se pudo eliminar el elemento', life: 3000 });
                     }
                 }
             );
-            
-            //router.reload({ only: [tipo_de_elemento_para_ruta()] });
             
         },
     });
@@ -199,6 +198,7 @@ const confirm_de_eliminacion = () => {
                 <h1 class="text-3xl font-semibold">Listado de {{ title }}</h1>
             </div>
             <div class="col-span-1 flex p-2 flex-row gap-x-2 items-start">
+                <!-- Filtros -->
                 <div v-if="permitir_filtros" header="Filtrar por" toggleable collapsed class="grow">
                     <Button 
                         severity="primary"
@@ -208,13 +208,13 @@ const confirm_de_eliminacion = () => {
                         type="button"
                         icon="pi pi-chevron-down text-red-600"
                         label="Filtrar por"
-                        @click="($event) => $refs.op.toggle($event)" 
+                        @click="toggle_filtros_popover" 
                     />
-                    <Popover ref="op">
+                    <Popover ref="filtros_popover">
                         <FiltrosDeCrudLayout :tags="tags" v-on:cambio-en-filtros="filtrar" :key="key_de_filtros" />
                     </Popover>
                 </div>
-                
+                <!-- Botón para agregar -->
                 <Button severity="primary" class="ms-2 w-[150px] rounded-none" @click="mostrarModalCrear()" :class="{'invisible': acciones.includes('crear') == false}">
                     Agregar
                 </Button>
@@ -245,6 +245,7 @@ const confirm_de_eliminacion = () => {
                     :sortable="c.sortable"
                     :style="{ width: (c.field == 'body') ? '25%' : 'auto' }"
                 >
+                    <!-- Según sea el modelo (title) y el campo (field) será cómo lo mostramos en la tabla -->
                     <template #body="slotProps">
                         <span v-if="c.field == 'tags'">
                             <span v-for="tag in slotProps.data.tags" :key="tag.id" class="inline-block bg-yellow-200 rounded-xl px-3 py-1 text-sm mr-2 mb-2">
@@ -285,9 +286,21 @@ const confirm_de_eliminacion = () => {
                 <Column header="Acciones">
                     <template #body="slotProps">
                         <div class="flex flex-row gap-x-2">
-                            <Button v-if="acciones.includes('editar')" type="button" severity="primary" rounded @click="mostrarModalEditar(slotProps.data)" icon="pi pi-pencil" aria-label="Editar">
+                            <Button 
+                                v-if="acciones.includes('editar')" 
+                                type="button" severity="primary" rounded 
+                                @click="mostrarModalEditar(slotProps.data)" 
+                                icon="pi pi-pencil" 
+                                aria-label="Editar"
+                            >
                             </Button>
-                            <Button v-if="acciones.includes('eliminar')" type="button" severity="danger" rounded @click="mostrarModalEliminar(slotProps.data)" icon="pi pi-trash" aria-label="Eliminar">
+                            <Button 
+                                v-if="acciones.includes('eliminar')" 
+                                type="button" severity="danger" rounded 
+                                @click="mostrarModalEliminar(slotProps.data)" 
+                                icon="pi pi-trash" 
+                                aria-label="Eliminar"
+                            >
                             </Button>
                         </div>
                     </template>

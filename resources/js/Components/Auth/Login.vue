@@ -1,5 +1,5 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue';
+//import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -47,7 +47,7 @@ const submit = () => {
                     v-model="form.email"
                     required
                     autofocus
-                    autocomplete="username"
+                    autocomplete="email"
                     placeholder="Email"
                     :class="{ 'border-1 border-red-400': form.errors['email']  }"
                 />
@@ -74,7 +74,12 @@ const submit = () => {
 
             <div class="flex flex-row justify-between mt-4">
                 <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
+                    <Checkbox 
+                        name="remember" 
+                        v-model="form.remember"
+                        :binary="true"
+                        icon="pi pi-circle-fill"
+                     />
                     <span class="ms-2 text-sm text-gray-600">Recuerdame</span>
                 </label>
                 <Link

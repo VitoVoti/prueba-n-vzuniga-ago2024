@@ -1,9 +1,7 @@
 <script setup>
-import DangerButton from '@/Components/DangerButton.vue';
 import ErrorDeFormulario from '@/Components/Layout/ErrorDeFormulario.vue';
 import InputLabel from '@/Components/InputLabel.vue';
-import Modal from '@/Components/Modal.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import ModalBreeze from '@/Components/ModalBreeze.vue';
 import InputDeTexto from '@/Components/Layout/InputDeTexto.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
@@ -49,7 +47,7 @@ const closeModal = () => {
 
         <Button severity="danger" @click="confirmUserDeletion">Eliminar mi cuenta</Button>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
+        <ModalBreeze :show="confirmingUserDeletion" @close="closeModal">
             <div class="p-6">
                 <h2 class="text-lg font-medium text-gray-900">
                     ¿Está seguro/a que desea eliminar su cuenta?
@@ -90,6 +88,6 @@ const closeModal = () => {
                     </Button>
                 </div>
             </div>
-        </Modal>
+        </ModalBreeze>
     </section>
 </template>

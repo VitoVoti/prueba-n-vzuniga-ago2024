@@ -44,7 +44,7 @@ const submit = () => {
                     v-model="form.email"
                     required
                     autofocus
-                    autocomplete="username"
+                    autocomplete="email"
                 />
 
                 <ErrorDeFormulario class="mt-2" :message="form.errors.email" />
