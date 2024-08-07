@@ -23,6 +23,9 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+
+        $possible_github_usernames = ["ThePrimeagen", "dhh", "taylorotwell", "josevalim", "eduardoborges", "joseluisq", "SamsaraDevs"];
+
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
@@ -30,8 +33,9 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
 
-            // New custom fields
-            'github_username' => fake()->userName(),
+            // Campos nuevos
+            
+            'github_username' => fake()->randomElement($possible_github_usernames),
             'position' => fake()->jobTitle(),
             'profile_photo_path' => null,
             'is_active' => true,

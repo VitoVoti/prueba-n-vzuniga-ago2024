@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable;
 
     // Al crear o modificar usuario, si cambia github_username, se añade a la cola 
-    // la tarea de buscar el avatar de GitHub, descargarlo y asociarlo al usuario
+    // la tarea de buscar repos y avatar de GitHub. El avatar se descarga a Storage y se asocia al usuario
     protected static function boot()
     {
         parent::boot();
@@ -85,8 +86,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     
+    // Ya que en este momento roles casi no cambian (sólo se asignan admins en seeders) podemos usar caché
     public function hasRole($role){
-        return $this->roles()->where('name', $role)->exists();
+        return Cache::remember('user_' . $this->id . '_has_role_' . $role, 3600 * 3, function () use ($role) {
+            return $this->roles()->where('name', $role)->exists();
+        });
     }
     public function isAdmin(){
         return $this->hasRole('admin');

@@ -37,14 +37,12 @@ class UpdateGithubInfoFromUser implements ShouldQueue
 
         // Usamos GitHubService
         $data = GitHubService::getInfoFromUsername($github_username);
-        Log::debug("UpdateGithubInfoFromUser " . $github_username . " | GitHubService retorna " . json_encode(count($data) ? count($data) : "0") . " keys");
 
         if($data == "") return;
         
         // Primero llenamos avatar, se descarga y guarda en storage
         try {
             $avatar_url = $data['avatar_url'];
-            Log::debug("avatar_url is " . $avatar_url);
             $avatar_content = Http::get($avatar_url)->body();
             $avatar_path = 'github_avatars/' . $github_username . '.jpg';
             Storage::disk('public')->put($avatar_path, $avatar_content);
@@ -57,11 +55,9 @@ class UpdateGithubInfoFromUser implements ShouldQueue
         // Ahora sincronizo los repos, con cuidado de no escribir dos veces los existentes, y quitando los que ya no existen
         try {
             $repos_data = GitHubService::getReposFromUsername($github_username);
-            Log::debug("UpdateGithubInfoFromUser " . $github_username . " | getReposFromUsername is " . json_encode(count($repos_data) ? count($repos_data) : "0") . " keys");
             if($repos_data != ""){
 
                 $existing_repos = $this->user->repos()->pluck('github_id')->toArray();
-                Log::debug("UpdateGithubInfoFromUser " . $github_username . " | existing_repos length is " . json_encode(count($existing_repos)));
 
                 // Todo dentro de una transacción
                 DB::transaction(function () use ($existing_repos, $repos_data, $github_username) {
@@ -83,12 +79,10 @@ class UpdateGithubInfoFromUser implements ShouldQueue
                         ];
                     });
 
-                    Log::debug("UpdateGithubInfoFromUser " . $github_username . " | data_a_guardar length is " . json_encode(count($data_a_guardar)));
                     $this->user->repos()->createMany($data_a_guardar);
 
                     // Ahora quito repos que ya no estén
                     $repos_a_quitar = $this->user->repos()->whereNotIn('github_id', $repos_data_only_ids)->get();
-                    Log::debug("UpdateGithubInfoFromUser " . $github_username . " | repos_a_quitar length is " . json_encode($repos_a_quitar->count()) . " repos_data_only_ids es " . json_encode($repos_data_only_ids) . " ids de repos recien guardados es " . json_encode($data_a_guardar->pluck('github_id')->toArray()) . " ids de repos a quitar son " . json_encode($repos_a_quitar->pluck('github_id')->toArray()));
                     $repos_a_quitar->each->delete();
 
                     
